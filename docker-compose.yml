@@ -1,0 +1,18 @@
+services:
+  backend:
+    build: ./backend
+    working_dir: /app
+    ports:
+      - "4000:4000"
+    environment:
+      - DATABASE_URL=file:./dev.db
+    command: sh -c "npx prisma migrate deploy && node dist/index.js"
+  frontend:
+    build: ./frontend
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_BASE=http://localhost:4000/api
+    depends_on:
+      - backend
