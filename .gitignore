@@ -1,0 +1,20 @@
+# Node
+node_modules/
+
+# Next.js
+frontend/.next/
+
+# TypeScript builds
+backend/dist/
+
+# Prisma/DB
+backend/dev.db
+backend/prisma/generated/
+
+# Env
+backend/.env
+frontend/.env.local
+
+# OS/editor
+.DS_Store
+*.log
