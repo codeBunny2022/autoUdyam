@@ -1,0 +1,84 @@
+{
+  "fields": [
+    {
+      "tag": "input",
+      "id": "__EVENTTARGET",
+      "name": "__EVENTTARGET",
+      "type": "hidden",
+      "label": "",
+      "required": false
+    },
+    {
+      "tag": "input",
+      "id": "__EVENTARGUMENT",
+      "name": "__EVENTARGUMENT",
+      "type": "hidden",
+      "label": "",
+      "required": false
+    },
+    {
+      "tag": "input",
+      "id": "__VIEWSTATE",
+      "name": "__VIEWSTATE",
+      "type": "hidden",
+      "label": "",
+      "required": false
+    },
+    {
+      "tag": "input",
+      "id": "__VIEWSTATEGENERATOR",
+      "name": "__VIEWSTATEGENERATOR",
+      "type": "hidden",
+      "label": "",
+      "required": false
+    },
+    {
+      "tag": "input",
+      "id": "__VIEWSTATEENCRYPTED",
+      "name": "__VIEWSTATEENCRYPTED",
+      "type": "hidden",
+      "label": "",
+      "required": false
+    },
+    {
+      "tag": "input",
+      "id": "__EVENTVALIDATION",
+      "name": "__EVENTVALIDATION",
+      "type": "hidden",
+      "label": "",
+      "required": false
+    },
+    {
+      "tag": "input",
+      "id": "ctl00_ContentPlaceHolder1_txtadharno",
+      "name": "ctl00$ContentPlaceHolder1$txtadharno",
+      "type": "text",
+      "label": "",
+      "required": false
+    },
+    {
+      "tag": "input",
+      "id": "ctl00_ContentPlaceHolder1_txtownername",
+      "name": "ctl00$ContentPlaceHolder1$txtownername",
+      "type": "text",
+      "label": "",
+      "required": false
+    },
+    {
+      "tag": "input",
+      "id": "ctl00_ContentPlaceHolder1_chkDecarationA",
+      "name": "ctl00$ContentPlaceHolder1$chkDecarationA",
+      "type": "checkbox",
+      "label": "",
+      "required": false
+    },
+    {
+      "tag": "input",
+      "id": "ctl00_ContentPlaceHolder1_btnValidateAadhaar",
+      "name": "ctl00$ContentPlaceHolder1$btnValidateAadhaar",
+      "type": "submit",
+      "label": "",
+      "required": false
+    }
+  ]
+}
