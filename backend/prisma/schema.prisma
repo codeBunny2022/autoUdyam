@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Registration {
+  id               String   @id @default(cuid())
+  createdAt        DateTime @default(now())
+  // Step 1 fields
+  aadhaarNumber    String
+  applicantName    String
+  mobileNumber     String
+  otpVerified      Boolean  @default(false)
+  
+  // Step 2 fields
+  panNumber        String
+  pinCode          String?
+  state            String?
+  city             String?
+}
