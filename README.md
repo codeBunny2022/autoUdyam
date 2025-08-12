@@ -14,75 +14,83 @@
 
 ## 📚 Table of Contents
 
-- [Features](#-features)
-- [How it Works](#-how-it-works)
-- [Quick Start](#-quick-start)
-- [Project Structure](#-project-structure)
-- [API Documentation](#-api-documentation)
-- [Architecture](#-architecture)
-- [Data Storage & Management](#-data-storage--management)
-- [Deployment](#-deployment)
-- [Open Source Tools](#-open-source-tools)
-- [Contributing](#-contributing)
-- [License](#-license)
+* [Features](#-features)
+* [How it Works](#-how-it-works)
+* [Quick Start](#-quick-start)
+* [Project Structure](#-project-structure)
+* [API Documentation](#-api-documentation)
+* [Architecture](#-architecture)
+* [Data Storage & Management](#-data-storage--management)
+* [Deployment](#-deployment)
+* [Open Source Tools](#-open-source-tools)
+* [Contributing](#-contributing)
+* [License](#-license)
 
 ## 💡 Features
 
-- ✅ Responsive two-step form (Aadhaar + OTP, PAN)
-- 🧩 Dynamic rendering from server-provided schema
-- 🔐 Real-time validation via Zod (PAN/Aadhaar/Mobile/OTP/PIN)
-- 📲 "Get OTP" button with dummy OTP (alert popup + auto-fill)
-- 🗺️ PIN → State/City auto-fill using a public API proxied by backend
-- 🕷️ Scraping helper (Cheerio; Puppeteer available if needed)
-- 🧪 Basic tests (validators + API)
-- 🐳 Dockerfiles for frontend and backend + docker-compose
+* ✅ Responsive two-step form (Aadhaar + OTP, PAN)
+* 🧩 Dynamic rendering from server-provided schema
+* 🔐 Real-time validation via Zod (PAN/Aadhaar/Mobile/OTP/PIN)
+* 📲 "Get OTP" button with dummy OTP (alert popup + auto-fill)
+* 🗺️ PIN → State/City auto-fill using a public API proxied by backend
+* 🕷️ Scraping helper (Cheerio; Puppeteer available if needed)
+* 🧪 Basic tests (validators + API)
+* 🐳 Dockerfiles for frontend and backend + docker-compose
 
 ## ⚙️ How it Works
 
-1) Frontend requests schema from backend and renders fields dynamically.
-2) Step 1 (Aadhaar + Name + Mobile + OTP):
-   - Click "Get OTP" → backend issues dummy OTP `123456` → alert shows OTP and it auto-fills.
-   - Validate with POST `/api/validate/step1`.
-3) Step 2 (PAN + optional PIN/State/City):
-   - PAN validated by POST `/api/validate/step2`.
-   - If PIN is 6 digits, backend pin API returns State/City.
-4) Submit both steps to POST `/api/submit` → backend re-validates and stores via Prisma.
-5) Scraping script can save raw fields from the official portal for reference.
+
+1. Frontend requests schema from backend and renders fields dynamically.
+2. Step 1 (Aadhaar + Name + Mobile + OTP):
+   * Click "Get OTP" → backend issues dummy OTP `123456` → alert shows OTP and it auto-fills.
+   * Validate with POST `/api/validate/step1`.
+3. Step 2 (PAN + optional PIN/State/City):
+   * PAN validated by POST `/api/validate/step2`.
+   * If PIN is 6 digits, backend pin API returns State/City.
+4. Submit both steps to POST `/api/submit` → backend re-validates and stores via Prisma.
+5. Scraping script can save raw fields from the official portal for reference.
 
 ## 🏁 Quick Start
 
 ### Prerequisites
-- Node.js 20+
-- npm 10+
+
+* Node.js 20+
+* npm 10+
 
 ### Backend (dev)
+
 ```bash
 cd backend
 npm i
 npx prisma migrate dev
 npm run dev
 ```
-- Base URL: `http://localhost:4000`
-- Endpoints: `/api/schema`, `/api/otp/send`, `/api/validate/step1`, `/api/validate/step2`, `/api/pin/:pinCode`, `/api/submit`
-- Tests: `npm test`
-- Scrape (raw fields JSON): `npm run scrape` → `backend/schemas/udyam_step1_2_raw.json`
+
+* Base URL: `http://localhost:4000`
+* Endpoints: `/api/schema`, `/api/otp/send`, `/api/validate/step1`, `/api/validate/step2`, `/api/pin/:pinCode`, `/api/submit`
+* Tests: `npm test`
+* Scrape (raw fields JSON): `npm run scrape` → `backend/schemas/udyam_step1_2_raw.json`
 
 ### Frontend (dev)
+
 ```bash
 cd frontend
 npm i
 echo "NEXT_PUBLIC_API_BASE=http://localhost:4000/api" > .env.local
 npm run dev
 ```
-- App: `http://localhost:3000`
+
+* App: `http://localhost:3000`
 
 ### Docker (local)
+
 ```bash
 # From project root
 docker compose up --build
 ```
-- Frontend: `http://localhost:3000`
-- Backend: `http://localhost:4000`
+
+* Frontend: `http://localhost:3000`
+* Backend: `http://localhost:4000`
 
 ## 🗂️ Project Structure
 
@@ -120,17 +128,23 @@ autoUdyam/
 ## 📖 API Documentation
 
 ### POST `/api/otp/send`
+
 Request:
+
 ```json
 { "mobileNumber": "9876543210" }
 ```
+
 Response (200):
+
 ```json
 { "message": "OTP sent", "otp": "123456" }
 ```
 
 ### POST `/api/validate/step1`
+
 Request:
+
 ```json
 {
   "aadhaarNumber": "123456789012",
@@ -139,23 +153,31 @@ Request:
   "otp": "123456"
 }
 ```
+
 Response: `{ "ok": true }` or validation errors.
 
 ### POST `/api/validate/step2`
+
 Request:
+
 ```json
 { "panNumber": "ABCDE1234F", "pinCode": "560001" }
 ```
+
 Response: `{ "ok": true }` or validation errors.
 
 ### GET `/api/pin/:pinCode`
+
 Response (200):
+
 ```json
 { "state": "Karnataka", "city": "Bengaluru" }
 ```
 
 ### POST `/api/submit`
+
 Request:
+
 ```json
 {
   "step1": {
@@ -172,13 +194,16 @@ Request:
   }
 }
 ```
+
 Response (201):
+
 ```json
 { "id": "<registration-id>" }
 ```
 
 ### GET `/api/schema`
-- Returns JSON schema for dynamic form rendering (two steps: Aadhaar/OTP, PAN).
+
+* Returns JSON schema for dynamic form rendering (two steps: Aadhaar/OTP, PAN).
 
 ## 🧭 Architecture
 
@@ -194,15 +219,18 @@ flowchart LR
 ```
 
 ## 🗄️ Data Storage & Management
-- Local dev DB: `backend/dev.db` (from `DATABASE_URL="file:./dev.db"`).
+
+* Local dev DB: `backend/dev.db` (from `DATABASE_URL="file:./dev.db"`).
 
 View/Edit/Delete with Prisma Studio:
+
 ```bash
 cd backend
 npx prisma studio
 ```
 
 SQLite CLI:
+
 ```bash
 cd backend
 sqlite3 dev.db
@@ -215,47 +243,58 @@ DELETE FROM Registration;
 ```
 
 Reset DB:
+
 ```bash
 rm backend/dev.db
 cd backend && npx prisma migrate dev
 ```
 
 Docker Compose (DB inside container):
+
 ```bash
 docker compose exec backend sh
 sqlite3 dev.db
 ```
+
 For persistence, mount a volume/bind the file or switch to Postgres (`DATABASE_URL`).
 
 ## 🚀 Deployment
-- Two images recommended (frontend and backend) for clear scaling and env separation.
-- Local single-host: `docker compose up --build`.
-- Separate services (cloud):
-  1) Build & push images:
+
+* Two images recommended (frontend and backend) for clear scaling and env separation.
+* Local single-host: `docker compose up --build`.
+* Separate services (cloud):
+
+  
+  1. Build & push images:
+
      ```bash
      docker build -t YOUR_DH/auto-udyam-backend:latest ./backend
      docker push YOUR_DH/auto-udyam-backend:latest
      docker build -t YOUR_DH/auto-udyam-frontend:latest ./frontend
      docker push YOUR_DH/auto-udyam-frontend:latest
      ```
-  2) Deploy backend with env `DATABASE_URL=...` and start command:
+  2. Deploy backend with env `DATABASE_URL=...` and start command:
+
      ```bash
      npx prisma migrate deploy && node dist/index.js
      ```
-  3) Deploy frontend with env `NEXT_PUBLIC_API_BASE=https://your-backend-domain/api` and start command `npm start`.
+  3. Deploy frontend with env `NEXT_PUBLIC_API_BASE=https://your-backend-domain/api` and start command `npm start`.
 
 ## 🧰 Open Source Tools
-- Frontend: Next.js, TypeScript
-- Backend: Express, Zod, Axios
-- ORM/DB: Prisma, SQLite/PostgreSQL
-- Scraping: Cheerio (and Puppeteer available)
-- Testing: Jest, Supertest
-- DevOps: Docker, docker-compose
+
+* Frontend: Next.js, TypeScript
+* Backend: Express, Zod, Axios
+* ORM/DB: Prisma, SQLite/PostgreSQL
+* Scraping: Cheerio (and Puppeteer available)
+* Testing: Jest, Supertest
+* DevOps: Docker, docker-compose
 
 ## 🤝 Contributing
+
 PRs welcome! Please follow code style, include meaningful tests, and update docs where relevant.
 
-## 📝 License
-TBD. Add a LICENSE file to define usage terms.
+## 📝 Developer
+
+made by @chirag  :)
 
 
