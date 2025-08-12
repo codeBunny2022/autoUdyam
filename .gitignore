@@ -18,3 +18,4 @@ frontend/.env.local
 # OS/editor
 .DS_Store
 *.log
+backend/prisma/dev.db
